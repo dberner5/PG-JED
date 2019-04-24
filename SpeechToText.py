@@ -5,6 +5,9 @@ Given an audio file, translate it into a string of text using Google Speech to T
 import io
 import os
 
+#set credentials
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="./SpeechToText-bedba1969dba.json"
+
 # Imports the Google Cloud client library
 from google.cloud import speech
 from google.cloud.speech import enums
@@ -14,10 +17,7 @@ from google.cloud.speech import types
 client = speech.SpeechClient()
 
 # The name of the audio file to transcribe
-file_name = os.path.join(
-    os.path.dirname(__file__),
-    'resources',
-    'audio.raw')
+file_name = "RecordingMono.flac"
 
 # Loads the audio into memory
 with io.open(file_name, 'rb') as audio_file:
@@ -25,12 +25,13 @@ with io.open(file_name, 'rb') as audio_file:
     audio = types.RecognitionAudio(content=content)
 
 config = types.RecognitionConfig(
-    encoding=enums.RecognitionConfig.AudioEncoding.LINEAR16,
-    sample_rate_hertz=16000,
+    encoding=enums.RecognitionConfig.AudioEncoding.FLAC,
+    sample_rate_hertz=44100,
     language_code='en-US')
 
 # Detects speech in the audio file
-response = client.recognize(config, audio)
+response = client.recognize(config, audio) #crashing here
 
 for result in response.results:
     print('Transcript: {}'.format(result.alternatives[0].transcript))
+    print("hello speech to text")
