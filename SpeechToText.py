@@ -1,5 +1,6 @@
 """
 Given an audio file, translate it into a string of text using Google Speech to Text API
+Caveats:  The audio file needs to be mono (not sterio) and a FLAC or wav format. 
 """
 
 import io
@@ -13,25 +14,35 @@ from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
 
-# Instantiates a client
-client = speech.SpeechClient()
 
-# The name of the audio file to transcribe
-file_name = "RecordingMono.flac"
+def SpeechToText(audio_file):
+    
+    if os.path.splitext(audio_file)[-1] not in [".flac", ".wav", ".FLAC", ".WAV"]:
+        raise ValueError("Encoding must be 'flac' or 'wav'")
+    
+    # Instantiates a client
+    client = speech.SpeechClient()
 
-# Loads the audio into memory
-with io.open(file_name, 'rb') as audio_file:
-    content = audio_file.read()
-    audio = types.RecognitionAudio(content=content)
+    # The name of the audio file to transcribe
+    #"RecordingMono.flac"
 
-config = types.RecognitionConfig(
-    encoding=enums.RecognitionConfig.AudioEncoding.FLAC,
-    sample_rate_hertz=44100,
-    language_code='en-US')
+    # Loads the audio into memory
+    with io.open(audio_file, 'rb') as speech_file:
+        content = speech_file.read()
+        audio = types.RecognitionAudio(content=content)
 
-# Detects speech in the audio file
-response = client.recognize(config, audio) #crashing here
+    config = types.RecognitionConfig(
+        #encoding=enums.RecognitionConfig.AudioEncoding.ENCODING_UNSPECIFIED,
+        #sample_rate_hertz=88200,
+        model = 'phone_call',
+        language_code='en-US')
+    
+    # Detects speech in the audio file
+    response = client.recognize(config, audio) 
 
-for result in response.results:
-    print('Transcript: {}'.format(result.alternatives[0].transcript))
-    print("hello speech to text")
+    responses = []
+    for result in response.results:
+        responses.append(result.alternatives[0].transcript)
+    return responses
+
+#print(SpeechToText('audio_files/MAD MAC 2019-04-25.wav'))
