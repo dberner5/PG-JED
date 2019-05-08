@@ -23,17 +23,12 @@ def SpeechToText(audio_file):
     # Instantiates a client
     client = speech.SpeechClient()
 
-    # The name of the audio file to transcribe
-    #"RecordingMono.flac"
-
     # Loads the audio into memory
     with io.open(audio_file, 'rb') as speech_file:
         content = speech_file.read()
         audio = types.RecognitionAudio(content=content)
 
     config = types.RecognitionConfig(
-        #encoding=enums.RecognitionConfig.AudioEncoding.ENCODING_UNSPECIFIED,
-        #sample_rate_hertz=88200,
         model = 'phone_call',
         language_code='en-US')
     

@@ -2,6 +2,7 @@ import os
 import io
 import subprocess
 import wave
+from pydub import AudioSegment
 
 def convert_to_wav(audio_file):
     """
@@ -21,24 +22,12 @@ def convert_to_wav(audio_file):
         print("file already exists in .wav format")
     
     #if its stereo, convert to mono
-    stereo = False
     with wave.open(output_file, 'rb') as wav_file:
         if wav_file.getnchannels() > 1:
-            stereo = True
-            params = wav_file.getparams()
-            file_bytes = wav_file.readframes(params[3])
-    
-    if stereo == True:
-        #prepare new params:
-        mono_params = list(params)
-        mono_params[0] = 1
-        mono_params[2] = mono_params[2]*2
-        mono_params = tuple(mono_params)
-
-        #convert to mono
-        with wave.open(output_file, 'wb') as wav_file:
-            wav_file.setparams(mono_params)
-            wav_file.writeframes(file_bytes)
+            sound = AudioSegment.from_wav(output_file)
+            sound = sound.set_channels(1)
+            sound.export(output_file, format="wav")
+            
     return output_file
 
 #convert_to_wav("audio_files/Doyle Godbolt  04.26.2019.mp3")

@@ -1,32 +1,27 @@
-import os
-import pydub
-import glob
 from convert_audio_to_wav import convert_to_wav
 from SpeechToText import SpeechToText
 from profanityCheck import Profanity_Checker
 
 """
-Call SpeechToText on an audio file to translate it to text
-Call checkProfanity on the text to check for profanity
+This application utilizes google's speech to text API, open source NLP libraries
+and some personal touches to flag if a <1min audio file contains explicit language or not
 """
 
-audio_file = "audio_files/Doyle Godbolt  04.26.2019.mp3"
-wav_file = convert_to_wav(audio_file)
+def listen(audio_file):
 
-# flac_files = glob.glob('audio_files/*.flac')
-# flac_file = flac_files[0]
+    #convert audio file to correct format
+    audio_file = convert_to_wav(audio_file)
 
-text = SpeechToText(wav_file)
-# print(text)
+    #translate audio file into text
+    text = SpeechToText(audio_file)
 
-P = Profanity_Checker()
+    #check text for profanity
+    P = Profanity_Checker()
+    isProfane = P.check_str(text)
 
-isProfane = P.check_str(text)
-# print(isProfane)
+    result = f"{audio_file} has been analyzed:\nText: {text}\nContains explicit language? {isProfane}"
+    print(result)
+    return isProfane
 
-result = "{} has been analyzed:\nText: {}\nContains explicit language? {}"\
-    .format(wav_file,text,isProfane)
-
-print(result)
-
+#listen("audio_files/JED Golf 05.03.2019.mp3")
 

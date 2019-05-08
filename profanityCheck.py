@@ -1,3 +1,4 @@
+import os
 from profanity_check import predict
 from nltk.stem import PorterStemmer
 from nltk.tokenize import word_tokenize
@@ -10,9 +11,11 @@ or arrays of strings.
 class Profanity_Checker:
     def __init__(self):
         self.ps = PorterStemmer()
-        with open('bad_words.txt', 'r') as file:
-            self.bad_words = set(file.read().split("\n"))
-    
+        self.bad_words = None
+        if os.path.isfile('bad_words.txt'):
+            with open('bad_words.txt', 'r') as file:
+                self.bad_words = set(file.read().split("\n"))
+                   
     def check_str(self, text): 
         '''
         accepts a string or a list with one string in it and returns True 
@@ -30,16 +33,17 @@ class Profanity_Checker:
             raise ValueError("element type must be str")
         
         if len(text) > 1 and type(text) == list:
-            raise ValueError("if list, must be of a single string")
+            text = "".join(text)
         
         if len(text) == 1 and type(text) == list:
             text = text[0]
 
         ### Stem text and check against bad words ###
         words = word_tokenize(text)
-        for word in words:
-            if self.ps.stem(word) in self.bad_words:
-                return True
+        if self.bad_words:
+            for word in words:
+                if self.ps.stem(word) in self.bad_words:
+                    return True
         
         ### Utilize more sophisticated profane checker library ###
         if predict([text])[0] == 1:
