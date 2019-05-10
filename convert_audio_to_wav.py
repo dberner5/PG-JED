@@ -12,14 +12,11 @@ def convert_to_wav(audio_file):
 
     #create output file path
     output_file = list(os.path.splitext(audio_file)[:-1])
-    output_file.append(".wav")
+    output_file.append("_test_.wav")
     output_file = "".join(output_file)
     
-    #check if file is already in .wav format before trying to make another
-    if not os.path.isfile(output_file):
-        subprocess.call(['ffmpeg', '-i', audio_file, output_file])
-    else:
-        print("file already exists in .wav format")
+    #convert audio to .wav
+    subprocess.call(['ffmpeg', '-i', audio_file, output_file])
     
     #if its stereo, convert to mono
     with wave.open(output_file, 'rb') as wav_file:

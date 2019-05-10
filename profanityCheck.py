@@ -38,14 +38,14 @@ class Profanity_Checker:
         if len(text) == 1 and type(text) == list:
             text = text[0]
 
-        ### Stem text and check against bad words ###
+        #Stem text and check against bad words
         words = word_tokenize(text)
         if self.bad_words:
             for word in words:
                 if self.ps.stem(word) in self.bad_words:
                     return True
         
-        ### Utilize more sophisticated profane checker library ###
+        #Utilize more sophisticated profane checker library
         if predict([text])[0] == 1:
             return True
 
@@ -60,6 +60,3 @@ class Profanity_Checker:
             raise ValueError("Input must be of type list")
 
         return [(text, self.check_str(text)) for text in list_of_strings]
-
-# P = Profanity_Checker()
-# print(P.check_str(["I fuck you"]))
