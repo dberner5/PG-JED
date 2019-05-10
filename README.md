@@ -7,4 +7,5 @@ In order to convert audio files into .WAV, you must install ffmpeg and expose th
 
 See requirements.txt for environment packages
 
-
+Usage:
+Pass the path to an audio file to the listen() function within main.py.  Function will return a True if profane language was detected, else False. 
