@@ -11,5 +11,7 @@ Returns True if explicit language is detected, else False.
 ## requirments:
 In order to convert audio files into .WAV, you must install ffmpeg and expose that binary to windows PATH ie: C:\Users\Daniel\Downloads\ffmpeg-20190505-e384f6f-win64-static\bin
 
+Must set your own google API key within SpeechToText.py by setting os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "\<path to json file containing api key\>"
+
 See requirements.txt for environment packages
 
