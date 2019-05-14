@@ -1,3 +1,4 @@
+import sys
 import os
 from convert_audio_to_wav import convert_to_wav
 from SpeechToText import SpeechToText
@@ -21,6 +22,7 @@ def listen(audio_file):
 
     #format readable result string
     result = f"{audio_file} has been analyzed:\nText: {text}\nContains explicit language? {isProfane}"
+    print('\n#############################')
     print(result)
 
     #clean up audio file by removing _test_.wav copy used in the api
@@ -28,5 +30,7 @@ def listen(audio_file):
 
     return isProfane
 
-listen("audio_files/29-089531s.wav")
-
+if __name__ == "__main__":
+    assert len(sys.argv) == 2
+    assert os.path.isfile(sys.argv[1])
+    listen(sys.argv[1])
