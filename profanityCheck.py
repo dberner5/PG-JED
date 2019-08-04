@@ -18,25 +18,16 @@ class Profanity_Checker:
                    
     def check_str(self, text): 
         '''
-        accepts a string or a list with one string in it and returns True 
+        accepts a string and returns True 
         if the string is profane or False if its all good
         '''
         
         ### Check for proper usage ###
+        if type(text) != str:
+            raise ValueError("input must be of type string")
+        
         if not text:
-            raise ValueError("input text cannot be None")
-        
-        if type(text) != list and type(text) != str:
-            raise ValueError("input must be of type string or list of a string")
-
-        if type(text) == list and type(text[0]) != str:
-            raise ValueError("element type must be str")
-        
-        if len(text) > 1 and type(text) == list:
-            text = "".join(text)
-        
-        if len(text) == 1 and type(text) == list:
-            text = text[0]
+            return
 
         #Stem text and check against bad words
         words = word_tokenize(text)
@@ -59,4 +50,10 @@ class Profanity_Checker:
         if type(list_of_strings) != list:
             raise ValueError("Input must be of type list")
 
-        return [(text, self.check_str(text)) for text in list_of_strings]
+        sentences =  [(text, self.check_str(text)) for text in list_of_strings]
+
+        for sentence in sentences:
+            print(sentence)
+            if sentence[1] == True:
+                return True
+        return False

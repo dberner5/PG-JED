@@ -6,7 +6,7 @@ from profanityCheck import Profanity_Checker
 
 def listen(audio_file):
     """
-    This application utilizes google's speech to text API, open source NLP libraries
+    This function utilizes google's speech to text API, open source NLP libraries
     and some personal touches to flag if a <1min audio file contains explicit language or not
     """
 
@@ -18,7 +18,7 @@ def listen(audio_file):
 
     #check text for profanity
     P = Profanity_Checker()
-    isProfane = P.check_str(text)
+    isProfane = P.check_list(text)
 
     #format readable result string
     result = f"{audio_file} has been analyzed:\nText: {text}\nContains explicit language? {isProfane}"
