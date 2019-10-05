@@ -37,5 +37,3 @@ def SpeechToText(audio_file):
         responses.append(result.alternatives[0].transcript)
 
     return responses
-
-#print(SpeechToText('audio_files/MAD MAC 2019-04-25.wav'))

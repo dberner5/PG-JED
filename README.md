@@ -4,7 +4,7 @@ and some personal touches to flag if a <1min audio file contains explicit langua
 
 ## usage:
 To envoke the program via the command line, pass in one argument (the path to an audio file) to the listen.py script.
-example in linux/bash shell:  $ python3.7 listen.py audio_files/test_audio_file.mp3
+example in linux/bash shell:  $ python listen.py audio_files/Voice_001.m4a
 
 Returns True if explicit language is detected, else False. 
 

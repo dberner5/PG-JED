@@ -53,7 +53,6 @@ class Profanity_Checker:
         sentences =  [(text, self.check_str(text)) for text in list_of_strings]
 
         for sentence in sentences:
-            print(sentence)
             if sentence[1] == True:
                 return True
         return False

@@ -1,5 +1,6 @@
 import sys
-import os
+from os import listdir, remove
+from os.path import isfile, isdir, join
 from convert_audio_to_wav import convert_to_wav
 from SpeechToText import SpeechToText
 from profanityCheck import Profanity_Checker
@@ -20,17 +21,22 @@ def listen(audio_file):
     P = Profanity_Checker()
     isProfane = P.check_list(text)
 
-    #format readable result string
-    result = f"{audio_file} has been analyzed:\nText: {text}\nContains explicit language? {isProfane}"
-    print('\n#############################')
-    print(result)
-
     #clean up audio file by removing _test_.wav copy used in the api
-    os.remove(audio_file)
+    remove(audio_file)
 
-    return isProfane
+    print("#################################################\n")
+
+    print(f"{audio_file} has been analyzed:")
+    return (text, isProfane)
+
+def listenAll(directory):
+    print("called listenAll")
+    audio_files = [f for f in listdir(directory) if isfile(join(directory, f))]
+    return [listen(join(directory, audio_file)) for audio_file in audio_files]
 
 if __name__ == "__main__":
     assert len(sys.argv) == 2
-    assert os.path.isfile(sys.argv[1])
-    listen(sys.argv[1])
+    if isfile(sys.argv[1]):
+        print(listen(sys.argv[1]))
+    if isdir(sys.argv[1]):
+        print(listenAll(sys.argv[1]))
